@@ -1,0 +1,13 @@
+<resources>
+    <string name="auth_account">Вход в аккаунт</string>
+    <string name="login">Войти</string>
+    <string name="signup">Cоздать аккаунт</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="createacc">Создать аккаунт</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="check_email">Проверьте почту!</string>
+    <string name="emailcodeabout">Проверьте почту, на неё в течении 3х минут должен прийти код</string>
+    <string name="forget">Забыли пароль?</string>
+    <string name="reget_account">Восстановить аккаунт</string>
+</resources>
