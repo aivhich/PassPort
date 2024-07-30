@@ -1,10 +1,10 @@
-package com.aivhich.applang.data.remote.retrofit
+package com.aivhich.passport.data.remote.retrofit
 
 import com.aivhich.passport.data.remote.dto.request.AuthenticationRequest
 import com.aivhich.applang.data.remote.dto.response.AuthenticationResponse
 import com.aivhich.applang.data.remote.dto.response.EmailVerifyResponse
 import com.aivhich.applang.data.remote.dto.request.RegisterRequest
-import com.aivhich.applang.data.remote.dto.UserDto
+import com.aivhich.passport.data.remote.dto.UserDto
 import com.aivhich.applang.data.remote.dto.request.CheckExistRequest
 import com.aivhich.applang.data.remote.dto.request.EmailVerifyRequest
 import com.aivhich.applang.data.remote.dto.request.StageRequest

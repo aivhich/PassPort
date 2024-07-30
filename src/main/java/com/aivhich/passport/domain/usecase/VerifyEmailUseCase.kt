@@ -1,12 +1,13 @@
-package com.aivhich.applang.domain.use_case.user
+package com.aivhich.passport.domain.usecase
 
 import android.util.Log
 import com.aivhich.passport.data.datasource.TokenDao
 import com.aivhich.passport.data.datasource.UserDao
 import com.aivhich.applang.data.remote.dto.request.EmailVerifyRequest
 import com.aivhich.applang.data.remote.dto.response.EmailVerifyResponse
-import com.aivhich.applang.data.remote.retrofit.ApiService
+import com.aivhich.passport.data.remote.retrofit.ApiService
 import javax.inject.Inject
+import com.aivhich.passport.common.Result
 
 class VerifyEmailUseCase @Inject constructor(
     private val apiService: ApiService,

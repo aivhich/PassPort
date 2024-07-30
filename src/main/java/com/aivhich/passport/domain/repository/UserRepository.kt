@@ -1,4 +1,4 @@
-package com.aivhich.applang.domain.repository
+package com.aivhich.passport.domain.repository
 
 import com.aivhich.passport.domain.model.User
 

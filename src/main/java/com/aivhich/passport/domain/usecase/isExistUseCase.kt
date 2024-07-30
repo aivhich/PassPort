@@ -1,10 +1,10 @@
-package com.aivhich.applang.domain.use_case.user
+package com.aivhich.passport.domain.usecase
 
 import android.util.Log
-import com.aivhich.applang.data.Result
+import com.aivhich.passport.common.Result
 import com.aivhich.applang.data.remote.dto.request.CheckExistRequest
 import com.aivhich.applang.data.remote.dto.response.CheckExistResponse
-import com.aivhich.applang.data.remote.retrofit.ApiService
+import com.aivhich.passport.data.remote.retrofit.ApiService
 import javax.inject.Inject
 
 class isExistUseCase @Inject constructor(

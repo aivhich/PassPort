@@ -1,4 +1,6 @@
-package com.aivhich.applang.data.remote.retrofit
+package com.aivhich.passport.data.remote.retrofit
+
+import com.aivhich.applang.data.remote.retrofit.RetrofitClient
 
 
 object Common {

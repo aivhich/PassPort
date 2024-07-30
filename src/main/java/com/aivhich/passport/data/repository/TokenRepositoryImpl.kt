@@ -1,12 +1,13 @@
-package com.aivhich.applang.data.repository
+package com.aivhich.passport.data.repository
 
 import android.util.Log
+import com.aivhich.applang.data.remote.dto.request.RegisterRequest
+import com.aivhich.passport.data.remote.retrofit.ApiService
+import com.aivhich.applang.domain.model.Token
+import com.aivhich.passport.domain.repository.TokenRepository
+import com.aivhich.passport.common.Result
 import com.aivhich.passport.data.datasource.TokenDao
 import com.aivhich.passport.data.remote.dto.request.AuthenticationRequest
-import com.aivhich.applang.data.remote.dto.request.RegisterRequest
-import com.aivhich.applang.data.remote.retrofit.ApiService
-import com.aivhich.applang.domain.model.Token
-import com.aivhich.applang.domain.repository.TokenRepository
 import javax.inject.Inject
 
 class TokenRepositoryImpl @Inject constructor(
@@ -14,7 +15,7 @@ class TokenRepositoryImpl @Inject constructor(
     private val dao: TokenDao
 ) : TokenRepository {
 
-    override suspend fun login(req: AuthenticationRequest):Result<Token> {
+    override suspend fun login(req: AuthenticationRequest): Result<Token> {
         return try {
             val answer = api.authenticate(req)
             dao.deleteToken()

@@ -1,4 +1,4 @@
-package com.aivhich.applang.data.remote.dto
+package com.aivhich.passport.data.remote.dto
 
 import com.aivhich.applang.data.remote.dto.request.Role
 import com.aivhich.passport.domain.model.User
@@ -19,13 +19,11 @@ data class UserDto(
 
 fun UserDto.toUser(): User {
     return User(
-        id=id,
-        nickname=nickname,
-        email=email,
-        isEmailVerified=isEmailVerified,
-        lastSeenAt=lastSeenAt?.toInstant()?.toEpochMilli()?:0L,
-        nativeLang=nativeLang?:"",
-        interests=interests?.toString()?:"",
-        birthday=birthday?.toInstant()?.toEpochMilli()?:0L
+        id = id,
+        name = "",
+        surname = "",
+        code = "",
+        email = email,
+        isEmailVerified = isEmailVerified
     )
 }

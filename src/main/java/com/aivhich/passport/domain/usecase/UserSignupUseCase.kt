@@ -1,12 +1,13 @@
-package com.aivhich.applang.domain.use_case.user
+package com.aivhich.passport.domain.usecase
 
 import com.aivhich.passport.data.datasource.UserDao
 import com.aivhich.applang.data.remote.dto.request.RegisterRequest
 import com.aivhich.applang.domain.model.Token
 import com.aivhich.passport.domain.model.User
-import com.aivhich.applang.domain.repository.TokenRepository
-import com.aivhich.applang.domain.repository.UserRepository
+import com.aivhich.passport.domain.repository.TokenRepository
+import com.aivhich.passport.domain.repository.UserRepository
 import javax.inject.Inject
+import com.aivhich.passport.common.Result
 
 class UserSignupUseCase @Inject constructor(
     private val userRepository: UserRepository,

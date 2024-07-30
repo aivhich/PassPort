@@ -1,12 +1,13 @@
-package com.aivhich.applang.domain.use_case.user
+package com.aivhich.passport.domain.usecase
 
 import android.util.Log
 import com.aivhich.passport.data.datasource.UserDao
 import com.aivhich.applang.data.remote.dto.request.StageRequest
 import com.aivhich.applang.data.remote.dto.response.StageResponse
-import com.aivhich.applang.data.remote.retrofit.ApiService
+import com.aivhich.passport.data.remote.retrofit.ApiService
 import com.aivhich.passport.domain.model.User
 import javax.inject.Inject
+import com.aivhich.passport.common.Result
 
 class UserStageUseCase @Inject constructor(
     private val apiService: ApiService,

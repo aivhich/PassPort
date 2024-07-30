@@ -11,11 +11,9 @@ import java.util.UUID
 data class User(
     @PrimaryKey
     val id: UUID,
-    val nickname:String,
+    val name:String,
+    val surname:String,
+    val code:String,
     val email:String,
     val isEmailVerified:Boolean,
-    val lastSeenAt:Long?,
-    val nativeLang:String?,
-    val interests:String?,
-    val birthday:Long?,
 )
