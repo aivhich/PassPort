@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.aivhich.passport.R
 import com.aivhich.passport.presentation.vm.MainViewModel
 import com.aivhich.zaryaui.BodyText
@@ -26,7 +27,7 @@ import com.aivhich.zaryaui.MainButton
 import com.aivhich.zaryaui.SubheadingText
 
 @Composable
-fun StartupScreen(viewModel: MainViewModel, toLogin: () -> Unit, toSignup: () -> Unit) {
+fun StartupScreen(viewModel: MainViewModel = hiltViewModel(), toLogin: () -> Unit, toSignup: () -> Unit) {
     Scaffold(
         topBar = {
             Column(Modifier.fillMaxWidth(),
@@ -59,7 +60,9 @@ fun StartupScreen(viewModel: MainViewModel, toLogin: () -> Unit, toSignup: () ->
         }
     ) { pd ->
         Column(
-            Modifier.fillMaxWidth().fillMaxHeight()
+            Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
                 .padding(pd),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center

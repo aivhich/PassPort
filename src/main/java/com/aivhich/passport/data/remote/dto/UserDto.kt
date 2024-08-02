@@ -1,6 +1,6 @@
 package com.aivhich.passport.data.remote.dto
 
-import com.aivhich.applang.data.remote.dto.request.Role
+import com.aivhich.passport.data.remote.dto.request.Role
 import com.aivhich.passport.domain.model.User
 import java.sql.Time
 import java.util.*

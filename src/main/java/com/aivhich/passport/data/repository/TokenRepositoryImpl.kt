@@ -1,7 +1,7 @@
 package com.aivhich.passport.data.repository
 
 import android.util.Log
-import com.aivhich.applang.data.remote.dto.request.RegisterRequest
+import com.aivhich.passport.data.remote.dto.request.RegisterRequest
 import com.aivhich.passport.data.remote.retrofit.ApiService
 import com.aivhich.applang.domain.model.Token
 import com.aivhich.passport.domain.repository.TokenRepository

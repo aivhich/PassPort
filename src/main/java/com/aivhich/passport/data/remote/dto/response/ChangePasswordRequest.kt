@@ -1,4 +1,4 @@
-package com.aivhich.applang.data.remote.dto.response
+package com.aivhich.passport.data.remote.dto.response
 
 data class ChangePasswordRequest(
     private val currentPassword: String? = null,

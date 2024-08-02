@@ -1,4 +1,4 @@
-package com.aivhich.applang.data.remote.dto.request
+package com.aivhich.passport.data.remote.dto.request
 
 import com.google.gson.annotations.SerializedName
 

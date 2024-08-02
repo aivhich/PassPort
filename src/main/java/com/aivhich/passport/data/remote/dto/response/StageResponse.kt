@@ -1,4 +1,4 @@
-package com.aivhich.applang.data.remote.dto.response
+package com.aivhich.passport.data.remote.dto.response
 
 import com.google.gson.annotations.SerializedName
 
@@ -21,5 +21,5 @@ enum class UserStage {
 
 data class StageResponse(
     @SerializedName("stage")
-    val stage:UserStage
+    val stage: UserStage
 )

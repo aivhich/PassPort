@@ -2,8 +2,8 @@ package com.aivhich.passport.domain.usecase
 
 import android.util.Log
 import com.aivhich.passport.data.datasource.UserDao
-import com.aivhich.applang.data.remote.dto.request.StageRequest
-import com.aivhich.applang.data.remote.dto.response.StageResponse
+import com.aivhich.passport.data.remote.dto.request.StageRequest
+import com.aivhich.passport.data.remote.dto.response.StageResponse
 import com.aivhich.passport.data.remote.retrofit.ApiService
 import com.aivhich.passport.domain.model.User
 import javax.inject.Inject

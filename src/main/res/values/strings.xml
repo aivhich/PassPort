@@ -10,4 +10,45 @@
     <string name="emailcodeabout">Проверьте почту, на неё в течении 3х минут должен прийти код</string>
     <string name="forget">Забыли пароль?</string>
     <string name="reget_account">Восстановить аккаунт</string>
+
+
+    <string name="to_login">Уже есть аккаунт?</string>
+    <string name="to_create_account">Нет аккаунта?</string>
+
+    <string name="enter_email">Введите ваш email</string>
+    <string name="enter_password">Придумайте пароль</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+
+    <string name="code_entermessage">Вам должно было прийти письмо с 6-ти значным кодом на указанную вами почту</string>
+    <string name="password_pattern">Минимум восемь и максимум 25 символов, как минимум одна заглавная, строчная буква, одна цифра и специальный символ</string>
+    <string name="email_pattern">Ваш email выглядит странно</string>
+    <string name="field_incorrectly">Это поле заполнено неправильно</string>
+    <string name="error_happend">Произошла неизвестная ошибка</string>
+
+    <string name="error_code">Введенный код неверный</string>
+
+
+    <string name="usernotexist">Пользователя не существует!</string>
+    <string name="userwasdeleted">Пользователь был удален, так как Email не был подтверждён!</string>
+    <string name="error_nickname_exist">Пользователь с таким никнеймом уже существует</string>
+    <string name="error_email_exist">Пользователь с таким email адрес уже существует</string>
+    <string name="pleasefillfields">Пожалуйста заполните поля!</string>
+
+    <string name="whenbirthday">Когда ваш день рождения?</string>
+    <string name="whatdoyoulike">Что вы любите?</string>
+    <string name="wemaderecommendation">Что вы любите?</string>
+    <string name="whatyoulevel">Какой у вас уровень английского языка?</string>
+    <string name="howmanywords">Сколько хотите изучать слов в день?</string>
+    <string name="youknowwords">Вы точно знате перевод этих слов: </string>
+    <string name="donwrecommendlimitword">Не рекоменуем вам ставить цель в более чем 30 слов в день</string>
+    <string name="chooseperson">Выберете персонажа для общения</string>
+    <string name="getaccess">Разрешите уведомления</string>
+    <string name="willsendnotify">Мы будем напоминать вам о занятиях ежедневно, а также рекомендовать интересные вам видео</string>
+
+    <string name="sendnotifyerr">Уведомления необходимы для работы с приложением! Позже вы сможете отключить их!</string>
+    <string name="next">Далее</string>
+    <string name="allow">Разрешить</string>
+    <string name="nickname">Никнейм</string>
+    <string name="enter_nickname">nickname</string>
 </resources>

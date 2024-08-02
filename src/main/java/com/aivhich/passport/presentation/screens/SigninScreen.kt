@@ -1,5 +1,6 @@
 package com.aivhich.passport.presentation.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,36 +11,38 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.aivhich.passport.R
+import com.aivhich.passport.presentation.vm.MainViewModel
 import com.aivhich.zaryaui.BodyText
 import com.aivhich.zaryaui.HeadlineText
-import com.aivhich.zaryaui.HyperlinkText
 import com.aivhich.zaryaui.LoginField
 import com.aivhich.zaryaui.MainButton
-import com.aivhich.zaryaui.NicknameField
 import com.aivhich.zaryaui.PasswordField
-import com.aivhich.zaryaui.SubText
 import com.aivhich.zaryaui.SubheadingText
 
 @Composable
-fun SigninScreen(toSignup:()->Unit, toForget:()->Unit){
+fun SigninScreen(vm: MainViewModel = hiltViewModel(), toSignup: () -> Unit, toForget: () -> Unit) {
+    val email = vm.email.observeAsState("")
+    val password = vm.password.observeAsState("")
+    val mContext = LocalContext.current
     Scaffold(
         topBar = {
-            Column(Modifier.fillMaxWidth(),
+            Column(
+                Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center) {
+                verticalArrangement = Arrangement.Center
+            ) {
                 Spacer(modifier = Modifier.height(42.dp))
                 SubheadingText(text = "PassPort", textColor = Color.Gray)
             }
@@ -54,9 +57,14 @@ fun SigninScreen(toSignup:()->Unit, toForget:()->Unit){
         ) {
             HeadlineText(text = stringResource(id = R.string.login))
             Spacer(modifier = Modifier.height(24.dp))
-            LoginField(value = "", error = "", onChange = {})
+            LoginField(value = email.value,
+                onChange = {
+                    vm.setEmail(it)
+                })
             Spacer(modifier = Modifier.height(8.dp))
-            PasswordField(value = "", onChange = {}, submit = {})
+            PasswordField(value = password.value,
+                onChange = { vm.setPassword(it) },
+                submit = { vm.send() })
             Spacer(modifier = Modifier.height(24.dp))
 
             MainButton(
@@ -65,7 +73,7 @@ fun SigninScreen(toSignup:()->Unit, toForget:()->Unit){
                 onClick = {},
                 modifier = Modifier
                     .shadow(3.dp, clip = true, shape = RoundedCornerShape(25))
-                    .fillMaxWidth(0.7f)
+                    .fillMaxWidth(0.8f)
                     .height(42.dp)
             ) {
                 BodyText(text = stringResource(id = R.string.login))
@@ -76,7 +84,7 @@ fun SigninScreen(toSignup:()->Unit, toForget:()->Unit){
                 contentColor = MaterialTheme.colorScheme.onBackground,
                 onClick = { toSignup() },
                 modifier = Modifier
-                    .fillMaxWidth(0.7f)
+                    .fillMaxWidth(0.8f)
                     .height(42.dp)
             ) {
                 BodyText(text = stringResource(id = R.string.signup))
@@ -87,12 +95,23 @@ fun SigninScreen(toSignup:()->Unit, toForget:()->Unit){
                 contentColor = MaterialTheme.colorScheme.onBackground,
                 onClick = { toForget() },
                 modifier = Modifier
-                    .fillMaxWidth(0.7f)
+                    .fillMaxWidth(0.8f)
                     .height(42.dp)
             ) {
                 BodyText(text = stringResource(id = R.string.forget))
             }
             Spacer(Modifier.height(24.dp))
+        }
+    }
+    LaunchedEffect(key1 = "Toast") {
+        vm.message.collect {
+            if (!it.hasBeenHandled) {
+                Toast.makeText(
+                    mContext,
+                    it.getContentIfNotHandled()?.asString(mContext),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 }

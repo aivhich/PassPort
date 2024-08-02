@@ -1,7 +1,7 @@
 package com.aivhich.passport.domain.usecase
 
 import com.aivhich.passport.data.datasource.UserDao
-import com.aivhich.applang.data.remote.dto.request.RegisterRequest
+import com.aivhich.passport.data.remote.dto.request.RegisterRequest
 import com.aivhich.applang.domain.model.Token
 import com.aivhich.passport.domain.model.User
 import com.aivhich.passport.domain.repository.TokenRepository
