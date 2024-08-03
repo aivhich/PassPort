@@ -4,17 +4,18 @@ import android.app.Application
 import androidx.room.Room
 import com.aivhich.passport.data.remote.retrofit.Common
 import com.aivhich.passport.domain.repository.TokenRepository
-import com.aivhich.passport.domain.repository.UserRepository
 import com.aivhich.passport.domain.usecase.UserUseCase
 import com.aivhich.passport.data.datasource.TokenDatabase
 import com.aivhich.passport.data.datasource.UserDatabase
 import com.aivhich.passport.data.remote.retrofit.ApiService
 import com.aivhich.passport.data.repository.TokenRepositoryImpl
 import com.aivhich.passport.data.repository.UserRepositoryImpl
+import com.aivhich.passport.domain.repository.UserRepository
 import com.aivhich.passport.domain.usecase.UserSignupUseCase
 import com.aivhich.passport.domain.usecase.UserStageUseCase
 import com.aivhich.passport.domain.usecase.VerifyEmailUseCase
 import com.aivhich.passport.domain.usecase.IsExistUseCase
+import com.aivhich.passport.domain.usecase.UserSignInWithToken
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -69,18 +70,28 @@ object Module {
                            tokenRepository: TokenRepository,
                            api: ApiService,
                            tokendb:TokenDatabase,
-                           userdb: UserDatabase): UserUseCase {
+                           userdb: UserDatabase
+    ): UserUseCase {
         return UserUseCase(
             userSignupUseCase = UserSignupUseCase(
                 userRepository = repository,
                 tokenRepository = tokenRepository,
                 userDao = userdb.userDao
             ),
-            userVerifyEmailUseCase = VerifyEmailUseCase(apiService = api,
+            userVerifyEmailUseCase =
+            VerifyEmailUseCase(
+                apiService = api,
                 userDao = userdb.userDao,
-                dao=tokendb.tokenDao),
+                dao=tokendb.tokenDao
+            ),
             isExistUseCase = IsExistUseCase(api),
-            userStage = UserStageUseCase(userDao = userdb.userDao, apiService = api)
+            userStage = UserStageUseCase(userDao = userdb.userDao, apiService = api),
+            userSignInWithToken = UserSignInWithToken(
+                userRepository = repository,
+                tokenRepository = tokenRepository,
+                tokenDao = tokendb.tokenDao,
+                userDao = userdb.userDao
+            )
         )
     }
 }

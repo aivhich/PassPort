@@ -12,9 +12,6 @@ enum class UserStage {
     @SerializedName("NOT_VERIFIED")
     NOT_VERIFIED,
 
-    @SerializedName("QA_NOT_COMPLETE")
-    QA_NOT_COMPLETE,
-
     @SerializedName("COMPLETE_AUTH")
     COMPLETE_AUTH
 }

@@ -1,11 +1,10 @@
-package com.aivhich.applang.domain.model
+package com.aivhich.passport.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
 data class Token(
-
     @PrimaryKey val id:Int?,
     val accesssToken:String,
     val refreshToken:String

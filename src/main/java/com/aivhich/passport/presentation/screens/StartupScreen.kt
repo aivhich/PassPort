@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,16 +17,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.aivhich.passport.R
-import com.aivhich.passport.presentation.vm.MainViewModel
 import com.aivhich.zaryaui.BodyText
 import com.aivhich.zaryaui.HeadlineText
 import com.aivhich.zaryaui.MainButton
 import com.aivhich.zaryaui.SubheadingText
 
 @Composable
-fun StartupScreen(viewModel: MainViewModel = hiltViewModel(), toLogin: () -> Unit, toSignup: () -> Unit) {
+fun StartupScreen(toLogin: () -> Unit, toSignup: () -> Unit) {
     Scaffold(
         topBar = {
             Column(Modifier.fillMaxWidth(),
@@ -55,7 +52,7 @@ fun StartupScreen(viewModel: MainViewModel = hiltViewModel(), toLogin: () -> Uni
                 ) {
                     BodyText(stringResource(id = R.string.login))
                 }
-                Spacer(modifier = Modifier.height(42.dp))
+                Spacer(modifier = Modifier.height(15.dp))
             }
         }
     ) { pd ->

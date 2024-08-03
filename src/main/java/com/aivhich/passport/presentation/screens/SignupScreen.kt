@@ -4,14 +4,12 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
@@ -47,6 +45,7 @@ import com.aivhich.zaryaui.MainButton
 import com.aivhich.zaryaui.NicknameField
 import com.aivhich.zaryaui.OutlinedField
 import com.aivhich.zaryaui.PasswordField
+import com.aivhich.zaryaui.SubText
 import com.aivhich.zaryaui.SubheadingText
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -61,6 +60,7 @@ fun SignupScreen(vm: MainViewModel = hiltViewModel(), toLogin: () -> Unit) {
     val mContext = LocalContext.current
     val isLoading by vm.doRequest.observeAsState()
     val swipeRefreshState = rememberPullRefreshState(isLoading ?: false, {})
+
 
     Scaffold(
         topBar = {
@@ -77,9 +77,8 @@ fun SignupScreen(vm: MainViewModel = hiltViewModel(), toLogin: () -> Unit) {
         Box(
             Modifier
                 .fillMaxSize()
-                .padding(pd)
+                .padding(pd),
         ) {
-            PullRefreshIndicator(vm.doRequest.value ?: false, swipeRefreshState)
             Column(
                 Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -99,13 +98,14 @@ fun SignupScreen(vm: MainViewModel = hiltViewModel(), toLogin: () -> Unit) {
                     Spacer(modifier = Modifier.width(8.dp))
                     OutlinedField(
                         value = surname.value,
-                        error = errorState.value.surnameError?.asString() ?: "",
+                        error = errorState.value.nameError?.asString() ?: "",
                         onChange = { vm.setSurname(it) },
                         label = stringResource(id = R.string.surname),
                         placeholder = stringResource(id = R.string.surname),
                         modifier = Modifier.weight(4f)
                     )
                 }
+
                 Spacer(modifier = Modifier.height(6.dp))
                 NicknameField(
                     value = nickname.value,
@@ -166,6 +166,11 @@ fun SignupScreen(vm: MainViewModel = hiltViewModel(), toLogin: () -> Unit) {
                 )
                 Spacer(Modifier.height(3.dp))
             }
+            PullRefreshIndicator(
+                vm.doRequest.value ?: false,
+                swipeRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
         }
     }
     LaunchedEffect(key1 = "Toast") {

@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.aivhich.applang.domain.model.Token
+import com.aivhich.passport.domain.model.Token
 
 @Dao
 interface TokenDao {
@@ -12,7 +12,7 @@ interface TokenDao {
     suspend fun saveToken(token: Token)
 
     @Query("SELECT * FROM token")
-    suspend fun getToken(): List<Token>
+    suspend fun getToken(): Token
 
 
     @Query("DELETE FROM token")

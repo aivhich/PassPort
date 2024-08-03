@@ -1,13 +1,13 @@
 package com.aivhich.passport.domain.usecase
 
-import com.aivhich.passport.data.datasource.UserDao
 import com.aivhich.passport.data.remote.dto.request.RegisterRequest
-import com.aivhich.applang.domain.model.Token
-import com.aivhich.passport.domain.model.User
+import com.aivhich.passport.domain.model.Token
 import com.aivhich.passport.domain.repository.TokenRepository
-import com.aivhich.passport.domain.repository.UserRepository
 import javax.inject.Inject
 import com.aivhich.passport.common.Result
+import com.aivhich.passport.data.datasource.UserDao
+import com.aivhich.passport.domain.model.User
+import com.aivhich.passport.domain.repository.UserRepository
 
 class UserSignupUseCase @Inject constructor(
     private val userRepository: UserRepository,
@@ -21,7 +21,7 @@ class UserSignupUseCase @Inject constructor(
                 return Result.Error(answer.throwable)
             }
             is Result.Success -> {
-                val token:Token = answer.data
+                val token: Token = answer.data
                 val user: User = userRepository.get(token.accesssToken)
                 userDao.delete()
                 userDao.saveUser(user)

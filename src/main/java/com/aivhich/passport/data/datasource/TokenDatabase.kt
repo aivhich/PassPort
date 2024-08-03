@@ -2,8 +2,7 @@ package com.aivhich.passport.data.datasource
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.aivhich.applang.domain.model.Token
-import com.aivhich.passport.data.datasource.TokenDao
+import com.aivhich.passport.domain.model.Token
 
 
 @Database(

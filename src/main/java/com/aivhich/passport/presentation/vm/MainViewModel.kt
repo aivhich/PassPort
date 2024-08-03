@@ -15,7 +15,6 @@ import com.aivhich.passport.data.remote.dto.response.UserStage.COMPLETE_AUTH
 import com.aivhich.passport.data.remote.dto.response.UserStage.DELETED_BECAUSE_NOT_VERIFIED
 import com.aivhich.passport.data.remote.dto.response.UserStage.NOT_EXIST
 import com.aivhich.passport.data.remote.dto.response.UserStage.NOT_VERIFIED
-import com.aivhich.passport.data.remote.dto.response.UserStage.QA_NOT_COMPLETE
 import com.aivhich.passport.presentation.states.AuthMistakesState
 import com.aivhich.passport.R
 import com.aivhich.passport.common.Event
@@ -30,13 +29,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel@Inject constructor(private val userUseCase: UserUseCase) : ViewModel()  {
-    private var passwordPattern: String =
+class MainViewModel @Inject constructor(private val userUseCase: UserUseCase) : ViewModel() {
+    private val passwordPattern: String =
         "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=])(?=\\S+\$).{8,25}\$"
-    private var usernamePattern: String = "^(?=.*[a-zA-Z])\\w{3,25}\$"
-    private var emailPattern: String = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+    private val usernamePattern: String = "^(?=.*[a-zA-Z])\\w{3,25}\$"
+    private val emailPattern: String = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+    private val namesPattern: String = "([a-zA-Zа-яА-Я]+)"
 
-    init{
+    init {
         onStart()
     }
 
@@ -45,6 +45,9 @@ class MainViewModel@Inject constructor(private val userUseCase: UserUseCase) : V
     fun setDoRequest(value: Boolean) {
         _doRequest.value = value
     }
+
+    var accessToken: String = ""
+    var refreshToken: String = ""
 
     private val _digitsCodeState = MutableLiveData<Boolean>(false)
     val digitsCodeState: LiveData<Boolean> get() = _digitsCodeState
@@ -67,28 +70,37 @@ class MainViewModel@Inject constructor(private val userUseCase: UserUseCase) : V
         var nicknameError: Int? = null
         var passwordError: Int? = null
         var emailError: Int? = null
+        var nameError: Int? = null
         val authMistakesState = AuthMistakesState()
 
         if (preSendCheck) {
-            when (val answer = userUseCase.isExistUseCase(CheckExistRequest(nickname.value!!, email.value!!))) {
+            when (val answer =
+                userUseCase.isExistUseCase(CheckExistRequest(nickname.value!!, email.value!!))) {
                 is Result.Success<CheckExistResponse> -> {
                     if (!answer.data.nickname) {
                         nicknameError = R.string.error_nickname_exist
                         authMistakesState.nicknameError = UiText.StringResource(nicknameError)
                     }
-                    if(!answer.data.email){
+                    if (!answer.data.email) {
                         emailError = R.string.error_email_exist
                         authMistakesState.emailError = UiText.StringResource(emailError)
                     }
                 }
+
                 is Result.Error -> {}
             }
         } else {
-            if (nickname.value?.isNotEmpty() == true&&nickname.value?.matches(usernamePattern.toRegex()) == false) {
+            if ((name.value?.isNotEmpty() == true && name.value?.matches(namesPattern.toRegex()) == false)
+                && surname.value?.isNotEmpty() == true && surname.value?.matches(namesPattern.toRegex()) == false
+            ) {
+                nameError = R.string.error_names
+                authMistakesState.nameError = UiText.StringResource(nameError)
+            }
+            if (nickname.value?.isNotEmpty() == true && nickname.value?.matches(usernamePattern.toRegex()) == false) {
                 nicknameError = R.string.field_incorrectly
                 authMistakesState.nicknameError = UiText.StringResource(nicknameError)
             }
-            if (email.value?.isNotEmpty() == true&&email.value?.matches(emailPattern.toRegex()) == false) {
+            if (email.value?.isNotEmpty() == true && email.value?.matches(emailPattern.toRegex()) == false) {
                 emailError = R.string.email_pattern
                 authMistakesState.emailError = UiText.StringResource(emailError)
             }
@@ -153,42 +165,57 @@ class MainViewModel@Inject constructor(private val userUseCase: UserUseCase) : V
     val code: LiveData<String> get() = _code
     fun setCode(value: String) {
         _code.value = value
-        if (digitsCodeState.value==true)_digitsCodeState.value=false
+        if (digitsCodeState.value == true) _digitsCodeState.value = false
         if (value.length == 6) {
             send()
         }
     }
 
-    fun onStart(){
+    private fun onStart() {
         viewModelScope.launch {
-            val answer:Result<StageResponse> = userUseCase.userStage()
-            Log.d("out", answer.toString())
-            when(answer){
+            Log.d("out", userUseCase.userStage().toString())
+            when (val answer: Result<StageResponse> = userUseCase.userStage()) {
                 is Result.Success -> {
-                    when(answer.data.stage){
+                    when (answer.data.stage) {
                         NOT_EXIST -> {
                             setState(AuthStates.SignUp)
                             statusMessage.send(Event(UiText.StringResource(R.string.usernotexist)))
                         }
+
                         DELETED_BECAUSE_NOT_VERIFIED -> {
                             setState(AuthStates.SignUp)
                             statusMessage.send(Event(UiText.StringResource(R.string.userwasdeleted)))
                         }
+
                         NOT_VERIFIED -> setState(AuthStates.EnterCode)
-                        QA_NOT_COMPLETE -> TODO()
-//setState(AuthStates.QuestionsNotComplete)
                         COMPLETE_AUTH -> {
-                            setState(AuthStates.Login)
+                            Log.d("out", "complete auth")
+                            when (val outtokens = userUseCase.userSignInWithToken()) {
+                                is Result.Success -> {
+                                    Log.d("out", "complete auth 2")
+                                    setState(
+                                        AuthStates.Success(
+                                            outtokens.data.accesssToken,
+                                            outtokens.data.refreshToken
+                                        )
+                                    )
+                                }
+                                is Result.Error -> {
+                                    //setState(AuthStates.Login)
+                                }
+                            }
                         }
                     }
                 }
+
                 is Result.Error -> {
-                    setState(AuthStates.SignUp)
+                    setState(AuthStates.StartUp)
                 }
             }
         }
     }
-    fun allSignupDataValid(): Boolean {
+
+    private fun allSignupDataValid(): Boolean {
         return (email.value?.matches(emailPattern.toRegex()) == true &&
                 nickname.value?.matches(usernamePattern.toRegex()) == true &&
                 password.value?.matches(passwordPattern.toRegex()) == true &&
@@ -208,7 +235,7 @@ class MainViewModel@Inject constructor(private val userUseCase: UserUseCase) : V
         viewModelScope.launch {
             if (state.value == AuthStates.SignUp) {
                 if (allSignupDataValid()) {
-                    if(validateData(true)) {
+                    if (validateData(true)) {
                         setDoRequest(true)
 
                         val answer = userUseCase.userSignupUseCase(
@@ -226,33 +253,38 @@ class MainViewModel@Inject constructor(private val userUseCase: UserUseCase) : V
                                 statusMessage.send(Event(UiText.StringResource(R.string.error_happend)))
                                 setDoRequest(false)
                             }
+
                             is Result.Success -> {
                                 setDoRequest(false)
+                                accessToken = answer.data.accesssToken
+                                refreshToken = answer.data.refreshToken
                                 setState(AuthStates.EnterCode)
                             }
                         }
                     }
-                } else  statusMessage.send(
+                } else statusMessage.send(
                     Event(UiText.StringResource(R.string.pleasefillfields))
                 )
             } else if (state.value == AuthStates.Login) {
-                if (allLoginDataValid()) { }
+                if (allLoginDataValid()) {
+                }
             } else if (state.value == AuthStates.EnterCode) {
                 when (val answer = userUseCase.userVerifyEmailUseCase(
                     EmailVerifyRequest(
-                    accessToken = "",
-                    email = email.value.toString(),
-                    code = code.value!!.toInt())
+                        accessToken = "",
+                        email = email.value.toString(),
+                        code = code.value!!.toInt()
+                    )
                 )) {
                     is Result.Success -> {
-                        if (answer.data.isValid){
-                            //setState(AuthStates.QuestionsNotComplete)
-                        }
-                        else {
+                        if (answer.data.isValid) {
+                            setState(AuthStates.Success(accessToken, refreshToken))
+                        } else {
                             _digitsCodeState.value = true
                             statusMessage.send(Event(UiText.StringResource(R.string.error_code)))
                         }
                     }
+
                     is Result.Error -> {
                         statusMessage.send(Event(UiText.StringResource(R.string.error_happend)))
                     }

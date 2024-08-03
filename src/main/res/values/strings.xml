@@ -51,4 +51,6 @@
     <string name="allow">Разрешить</string>
     <string name="nickname">Никнейм</string>
     <string name="enter_nickname">nickname</string>
+    <string name="connection_internet_error">Произошла ошибка, проверьте подключение к интернету!</string>
+    <string name="error_names">Заполните это поле правильно, без пробелов и других символов!</string>
 </resources>
