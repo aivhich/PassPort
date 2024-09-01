@@ -18,7 +18,12 @@ class TokenRepositoryImpl @Inject constructor(
     override suspend fun login(req: AuthenticationRequest): Result<Token> {
         return try {
             val answer = api.authenticate(req)
-            dao.deleteToken()
+            try {
+                dao.deleteToken()
+            }catch (e:Exception){
+                Log.d("out", "delete previous token error")
+            }
+            Log.d("out", answer.accessToken)
             val token = Token(
                 id = 0,
                 accesssToken = answer.accessToken,

@@ -3,6 +3,8 @@ package com.aivhich.passport.data.remote.dto
 import com.aivhich.passport.data.remote.dto.request.Role
 import com.aivhich.passport.domain.model.User
 import com.google.gson.annotations.SerializedName
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.*
 
 data class UserDto(
@@ -31,6 +33,7 @@ fun UserDto.toUser(): User {
         surname = surname,
         code = code,
         email = email,
-        isEmailVerified = isEmailVerified
+        isEmailVerified = isEmailVerified,
+        timestamp = ZonedDateTime.now(ZoneId.of("UTC-0")).toEpochSecond()
     )
 }

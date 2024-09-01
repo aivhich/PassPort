@@ -6,5 +6,6 @@ data class UserUseCase(
     val userVerifyEmailUseCase: VerifyEmailUseCase,
     val isExistUseCase: IsExistUseCase,
     val userStage: UserStageUseCase,
-    val userSignInWithToken: UserSignInWithToken
+    val userSignInWithToken: UserSignInWithToken,
+    val userLogin: UserLoginUseCase
 )

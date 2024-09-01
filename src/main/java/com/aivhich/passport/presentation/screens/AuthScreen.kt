@@ -21,6 +21,9 @@ fun AuthScreen(vm: MainViewModel = hiltViewModel(), toMain:(a:String, r:String)-
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         when (state) {
+            is AuthStates.Loading -> {
+                LoadScreen()
+            }
             is AuthStates.Login -> {
                 SigninScreen(
                     vm = vm,

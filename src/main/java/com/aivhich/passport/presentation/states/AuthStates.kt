@@ -1,6 +1,7 @@
 package com.aivhich.passport.presentation.states
 
 sealed class AuthStates() {
+    data object Loading : AuthStates()
     data object Login : AuthStates()
     data object SignUp : AuthStates()
     data object StartUp : AuthStates()

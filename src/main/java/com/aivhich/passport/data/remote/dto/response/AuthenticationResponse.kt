@@ -8,5 +8,7 @@ data class AuthenticationResponse(
     val accessToken:String,
 
     @SerializedName("refresh_token")
-    val refreshToken:String
+    val refreshToken:String,
+    @SerializedName("roles")
+    val roles:String
 )

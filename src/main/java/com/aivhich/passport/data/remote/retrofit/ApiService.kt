@@ -10,6 +10,7 @@ import com.aivhich.passport.data.remote.dto.request.EmailVerifyRequest
 import com.aivhich.passport.data.remote.dto.request.StageRequest
 import com.aivhich.passport.data.remote.dto.response.CheckExistResponse
 import com.aivhich.passport.data.remote.dto.response.StageResponse
+import retrofit2.Call
 
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -26,7 +27,7 @@ interface ApiService {
 
     @POST("/api/v1/auth/authenticate")
     @Headers("Content-Type: application/json")
-    suspend fun authenticate(@Body register: AuthenticationRequest): AuthenticationResponse
+    suspend fun authenticate(@Body auth: AuthenticationRequest): AuthenticationResponse
 
     @POST("/api/v1/auth/userStage")
     @Headers("Content-Type: application/json")
@@ -41,15 +42,14 @@ interface ApiService {
 
     @GET("/api/v1/users/get")
     @Headers("Content-Type: application/json")
-    suspend fun getUser(@Header("Authorization") authorization: String): UserDto
+    suspend fun getUser(@Header("Authorization") authorization: String): UserDto?
+
 
     @POST("/api/v1/auth/emailVerify")
     @Headers("Content-Type: application/json")
-    suspend fun emailVerify(
-        @Body emailVerifyRequest: EmailVerifyRequest
-    ): EmailVerifyResponse
+    suspend fun emailVerify(@Body emailVerifyRequest: EmailVerifyRequest): EmailVerifyResponse
 
-    @POST("/api/v1/auth/refresh_token")
+    @POST("/api/v1/auth/refresh-token")
     @Headers("Content-Type: application/json")
-    suspend fun refreshToken()
+    suspend fun refreshToken(@Header("Authorization") authorization: String):AuthenticationResponse
 }

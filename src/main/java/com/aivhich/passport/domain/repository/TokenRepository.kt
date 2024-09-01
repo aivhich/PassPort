@@ -7,7 +7,7 @@ import com.aivhich.passport.common.Result
 
 
 interface TokenRepository {
-    suspend fun login(req: AuthenticationRequest): com.aivhich.passport.common.Result<Token>
+    suspend fun login(req: AuthenticationRequest): Result<Token>
     suspend fun signup(req: RegisterRequest): Result<Token>
     fun refresh()
 }

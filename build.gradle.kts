@@ -63,6 +63,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.core:core-splashscreen:1.2.0-alpha01")
     implementation("androidx.compose.material3:material3")
 
     implementation("androidx.compose.material:material:1.6.8")

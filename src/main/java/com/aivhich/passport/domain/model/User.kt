@@ -13,4 +13,5 @@ data class User(
     val code:String?,
     val email:String,
     val isEmailVerified:Boolean,
+    val timestamp:Long,
 )

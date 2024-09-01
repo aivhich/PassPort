@@ -21,6 +21,7 @@ import com.aivhich.passport.common.Event
 import com.aivhich.passport.common.UiText
 import com.aivhich.passport.domain.usecase.UserUseCase
 import com.aivhich.passport.common.Result
+import com.aivhich.passport.data.remote.dto.request.AuthenticationRequest
 import com.aivhich.passport.presentation.states.AuthStates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -55,7 +56,7 @@ class MainViewModel @Inject constructor(private val userUseCase: UserUseCase) : 
     private val statusMessage = Channel<Event<UiText>>()
     val message = statusMessage.receiveAsFlow()
 
-    private val _state = MutableLiveData<AuthStates>(AuthStates.StartUp)
+    private val _state = MutableLiveData<AuthStates>(AuthStates.Loading)
     val state: LiveData<AuthStates> get() = _state
     fun setState(value: AuthStates) {
         _state.value = value
@@ -173,7 +174,6 @@ class MainViewModel @Inject constructor(private val userUseCase: UserUseCase) : 
 
     private fun onStart() {
         viewModelScope.launch {
-            Log.d("out", userUseCase.userStage().toString())
             when (val answer: Result<StageResponse> = userUseCase.userStage()) {
                 is Result.Success -> {
                     when (answer.data.stage) {
@@ -189,10 +189,8 @@ class MainViewModel @Inject constructor(private val userUseCase: UserUseCase) : 
 
                         NOT_VERIFIED -> setState(AuthStates.EnterCode)
                         COMPLETE_AUTH -> {
-                            Log.d("out", "complete auth")
                             when (val outtokens = userUseCase.userSignInWithToken()) {
                                 is Result.Success -> {
-                                    Log.d("out", "complete auth 2")
                                     setState(
                                         AuthStates.Success(
                                             outtokens.data.accesssToken,
@@ -200,8 +198,9 @@ class MainViewModel @Inject constructor(private val userUseCase: UserUseCase) : 
                                         )
                                     )
                                 }
+
                                 is Result.Error -> {
-                                    //setState(AuthStates.Login)
+                                    setState(AuthStates.StartUp)//
                                 }
                             }
                         }
@@ -267,6 +266,28 @@ class MainViewModel @Inject constructor(private val userUseCase: UserUseCase) : 
                 )
             } else if (state.value == AuthStates.Login) {
                 if (allLoginDataValid()) {
+                    setDoRequest(true)
+                    val answer = userUseCase.userLogin(
+                        AuthenticationRequest(
+                            email = email.value.toString(),
+                            password = password.value.toString(),
+                        )
+                    )
+                    when (answer) {
+                        is Result.Error -> {
+                            Log.d("out", answer.throwable.message.toString());
+                            statusMessage.send(Event(UiText.StringResource(R.string.error_happend)))
+                            setDoRequest(false)
+                        }
+
+                        is Result.Success -> {
+                            setDoRequest(false)
+                            accessToken = answer.data.accesssToken
+                            refreshToken = answer.data.refreshToken
+                            setState(AuthStates.Success(accessToken, refreshToken))
+                        }
+
+                    }
                 }
             } else if (state.value == AuthStates.EnterCode) {
                 when (val answer = userUseCase.userVerifyEmailUseCase(

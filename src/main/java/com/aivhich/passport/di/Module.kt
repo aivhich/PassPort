@@ -15,6 +15,7 @@ import com.aivhich.passport.domain.usecase.UserSignupUseCase
 import com.aivhich.passport.domain.usecase.UserStageUseCase
 import com.aivhich.passport.domain.usecase.VerifyEmailUseCase
 import com.aivhich.passport.domain.usecase.IsExistUseCase
+import com.aivhich.passport.domain.usecase.UserLoginUseCase
 import com.aivhich.passport.domain.usecase.UserSignInWithToken
 import dagger.Module
 import dagger.Provides
@@ -86,11 +87,16 @@ object Module {
             ),
             isExistUseCase = IsExistUseCase(api),
             userStage = UserStageUseCase(userDao = userdb.userDao, apiService = api),
+            userLogin = UserLoginUseCase(
+                userRepository = repository,
+                tokenRepository = tokenRepository,
+                userDao = userdb.userDao),
             userSignInWithToken = UserSignInWithToken(
                 userRepository = repository,
                 tokenRepository = tokenRepository,
                 tokenDao = tokendb.tokenDao,
-                userDao = userdb.userDao
+                userDao = userdb.userDao,
+                api = api
             )
         )
     }
