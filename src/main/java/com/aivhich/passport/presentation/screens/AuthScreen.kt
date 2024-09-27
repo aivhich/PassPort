@@ -13,7 +13,7 @@ import com.aivhich.passport.presentation.states.AuthStates
 import com.aivhich.passport.presentation.vm.MainViewModel
 
 @Composable
-fun AuthScreen(vm: MainViewModel = hiltViewModel(), toMain:(a:String, r:String)->Unit) {
+fun AuthScreen(vm: MainViewModel = hiltViewModel(), toMain:()->Unit) {
     val state = vm.state.observeAsState().value
     Column(
         Modifier.fillMaxSize(),
@@ -73,8 +73,7 @@ fun AuthScreen(vm: MainViewModel = hiltViewModel(), toMain:(a:String, r:String)-
             }
 
             is AuthStates.Success -> {
-                Log.d("token_", state.a)
-                toMain(state.a, state.r)
+                toMain()
             }
 
             else -> {}

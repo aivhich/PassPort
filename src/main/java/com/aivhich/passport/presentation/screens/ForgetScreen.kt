@@ -39,7 +39,7 @@ fun ForgetScreen(vm: MainViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Spacer(modifier = Modifier.height(42.dp))
+                Spacer(modifier = Modifier.height(32.dp))
                 SubheadingText(text = "PassPort", textColor = Color.Gray)
             }
         }

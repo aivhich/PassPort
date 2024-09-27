@@ -21,7 +21,8 @@ class UserRepositoryImpl @Inject constructor(
         return try {
             val user = api.getUser("Bearer $token")
             Result.Success(user?.toUser() ?: dao.get())
-        }catch (e:Throwable){
+
+        } catch (e: Throwable) {
             Result.Error(e)
         }
     }

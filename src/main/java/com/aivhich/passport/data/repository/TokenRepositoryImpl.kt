@@ -20,10 +20,7 @@ class TokenRepositoryImpl @Inject constructor(
             val answer = api.authenticate(req)
             try {
                 dao.deleteToken()
-            }catch (e:Exception){
-                Log.d("out", "delete previous token error")
-            }
-            Log.d("out", answer.accessToken)
+            }catch (e:Exception){ }
             val token = Token(
                 id = 0,
                 accesssToken = answer.accessToken,
@@ -39,14 +36,10 @@ class TokenRepositoryImpl @Inject constructor(
     override suspend fun signup(req: RegisterRequest): Result<Token> {
         try {
             dao.deleteToken()
-        }catch (e:Exception){
-            Log.d("out", "delete previous token error")
-        }
+        }catch (e:Exception){ }
         val answer = api.register(req)
-        Log.d("out", answer.accessToken)
         val token = Token(id = 0, answer.accessToken, answer.refreshToken)
         dao.saveToken(token)
-        Log.d("out", "signup result ")
         return Result.Success(token)
 
     }

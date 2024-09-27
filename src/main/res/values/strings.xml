@@ -1,12 +1,12 @@
 <resources>
-    <string name="auth_account">Вход в аккаунт</string>
+    <string name="auth_account">Добро пожаловать</string>
     <string name="login">Войти</string>
     <string name="signup">Cоздать аккаунт</string>
     <string name="create_account">Создать аккаунт</string>
     <string name="createacc">Создать аккаунт</string>
     <string name="name">Имя</string>
     <string name="surname">Фамилия</string>
-    <string name="check_email">Проверьте почту!</string>
+    <string name="check_email">Письмо отправлено</string>
     <string name="emailcodeabout">Проверьте почту, на неё в течении 3х минут должен прийти код</string>
     <string name="forget">Забыли пароль?</string>
     <string name="reget_account">Восстановить аккаунт</string>
@@ -20,7 +20,7 @@
     <string name="email">Email</string>
     <string name="password">Пароль</string>
 
-    <string name="code_entermessage">Вам должно было прийти письмо с 6-ти значным кодом на указанную вами почту</string>
+    <string name="code_entermessage">Письмо с 6-ти значным кодом отправлено на указанную вами почту.</string>
     <string name="password_pattern">Минимум восемь и максимум 25 символов, как минимум одна заглавная, строчная буква, одна цифра и специальный символ</string>
     <string name="email_pattern">Ваш email выглядит странно</string>
     <string name="field_incorrectly">Это поле заполнено неправильно</string>

@@ -26,12 +26,9 @@ class AuthActivity : ComponentActivity() {
         }
     }
 
-    fun toMain(access: String?, refresh:String?){
-        Log.d("token___", access.toString())
+    fun toMain(){
         val s = BuildConfig.MAIN_URL
         val intent = Intent(s)
-        intent.putExtra("access_token", access)
-        intent.putExtra("refresh_token", refresh)
         startActivity(intent)
     }
 }

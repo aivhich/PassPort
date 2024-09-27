@@ -16,22 +16,24 @@ import javax.inject.Inject
 class UserSignInWithToken @Inject constructor(
     private val userRepository: UserRepository,
     private val tokenRepository: TokenRepository,
-    private val userDao: UserDao,
     private val tokenDao: TokenDao,
     private val api: ApiService,
 ) {
     suspend operator fun invoke(): Result<Token> {
-        var token: Token = tokenDao.getToken()
+        var token: Token? = tokenDao.getToken()
         var user: User? = null
-        Log.d("out", token.accesssToken)
-        when(val out = userRepository.get(token.accesssToken)){
-            is Result.Success->{
-                user = out.data
-            }
-            is Result.Error->{
+        if(token!=null) {
+            when (val out = userRepository.get(token.accesssToken)) {
+                is Result.Success -> {
+                    user = out.data
+                }
 
-                Log.d("out", "aaaaaa")
+                is Result.Error -> {
+
+                }
             }
+        }else{
+            return Result.Error(Exception());
         }
         if (user != null) {
             if (user.isEmailVerified && user.email.isNotEmpty()) {
@@ -40,14 +42,12 @@ class UserSignInWithToken @Inject constructor(
         }
 
 
-        Log.d("out", "aaaaaa4")
         var answer:AuthenticationResponse? = null;
         try {
-            answer = api.refreshToken(token.refreshToken)
+            answer = api.refreshToken("Bearer "+token.refreshToken)
         }catch (e:Exception){
             return Result.Error(Exception())
         }
-        Log.d("out", "a8aaa")
         token = Token(
             id = 0,
             accesssToken = answer.accessToken,
@@ -60,7 +60,6 @@ class UserSignInWithToken @Inject constructor(
         }
         tokenDao.saveToken(token)
 
-        Log.d("out", "sign in with token")
         when(val out = userRepository.get(token.accesssToken)){
             is Result.Success->{
                 user = out.data;
@@ -68,12 +67,12 @@ class UserSignInWithToken @Inject constructor(
             is Result.Error->{}
         }
         try {
-            userDao.delete()
+            userRepository.delete()
         } catch (e: Exception) {
             return Result.Error(e);
         }
         if (user != null) {
-            userDao.saveUser(user)
+            userRepository.save(user)
             return Result.Success(token);
         }
         return Result.Error(Exception())

@@ -174,23 +174,24 @@ class MainViewModel @Inject constructor(private val userUseCase: UserUseCase) : 
 
     private fun onStart() {
         viewModelScope.launch {
-            when (val answer: Result<StageResponse> = userUseCase.userStage()) {
+            when (val outtokens = userUseCase.userSignInWithToken()) {
                 is Result.Success -> {
-                    when (answer.data.stage) {
-                        NOT_EXIST -> {
-                            setState(AuthStates.SignUp)
-                            statusMessage.send(Event(UiText.StringResource(R.string.usernotexist)))
-                        }
+                    when (val answer: Result<StageResponse> =
+                        userUseCase.userStage(outtokens.data.accesssToken)) {
+                        is Result.Success -> {
+                            when (answer.data.stage) {
+                                NOT_EXIST -> {
+                                    setState(AuthStates.SignUp)
+                                    statusMessage.send(Event(UiText.StringResource(R.string.usernotexist)))
+                                }
 
-                        DELETED_BECAUSE_NOT_VERIFIED -> {
-                            setState(AuthStates.SignUp)
-                            statusMessage.send(Event(UiText.StringResource(R.string.userwasdeleted)))
-                        }
+                                DELETED_BECAUSE_NOT_VERIFIED -> {
+                                    setState(AuthStates.SignUp)
+                                    statusMessage.send(Event(UiText.StringResource(R.string.userwasdeleted)))
+                                }
 
-                        NOT_VERIFIED -> setState(AuthStates.EnterCode)
-                        COMPLETE_AUTH -> {
-                            when (val outtokens = userUseCase.userSignInWithToken()) {
-                                is Result.Success -> {
+                                NOT_VERIFIED -> setState(AuthStates.EnterCode)
+                                COMPLETE_AUTH -> {
                                     setState(
                                         AuthStates.Success(
                                             outtokens.data.accesssToken,
@@ -198,17 +199,17 @@ class MainViewModel @Inject constructor(private val userUseCase: UserUseCase) : 
                                         )
                                     )
                                 }
-
-                                is Result.Error -> {
-                                    setState(AuthStates.StartUp)//
-                                }
                             }
+                        }
+
+                        is Result.Error -> {
+                            setState(AuthStates.StartUp)
                         }
                     }
                 }
 
                 is Result.Error -> {
-                    setState(AuthStates.StartUp)
+                    setState(AuthStates.StartUp)//
                 }
             }
         }
@@ -275,7 +276,6 @@ class MainViewModel @Inject constructor(private val userUseCase: UserUseCase) : 
                     )
                     when (answer) {
                         is Result.Error -> {
-                            Log.d("out", answer.throwable.message.toString());
                             statusMessage.send(Event(UiText.StringResource(R.string.error_happend)))
                             setDoRequest(false)
                         }

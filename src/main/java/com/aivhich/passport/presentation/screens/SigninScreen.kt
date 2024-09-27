@@ -52,7 +52,7 @@ fun SigninScreen(vm: MainViewModel = hiltViewModel(), toSignup: () -> Unit, toFo
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Spacer(modifier = Modifier.height(42.dp))
+                Spacer(modifier = Modifier.height(32.dp))
                 SubheadingText(text = "PassPort", textColor = Color.Gray)
             }
         }

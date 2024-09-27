@@ -77,25 +77,25 @@ object Module {
             userSignupUseCase = UserSignupUseCase(
                 userRepository = repository,
                 tokenRepository = tokenRepository,
-                userDao = userdb.userDao
             ),
             userVerifyEmailUseCase =
             VerifyEmailUseCase(
                 apiService = api,
                 userDao = userdb.userDao,
                 dao=tokendb.tokenDao
-            ),
+            ),///that is not correct should be with repositories
             isExistUseCase = IsExistUseCase(api),
-            userStage = UserStageUseCase(userDao = userdb.userDao, apiService = api),
+
+            userStage = UserStageUseCase(userRepository = repository, apiService = api),
+
             userLogin = UserLoginUseCase(
                 userRepository = repository,
-                tokenRepository = tokenRepository,
-                userDao = userdb.userDao),
+                tokenRepository = tokenRepository),
+
             userSignInWithToken = UserSignInWithToken(
                 userRepository = repository,
                 tokenRepository = tokenRepository,
-                tokenDao = tokendb.tokenDao,
-                userDao = userdb.userDao,
+                tokenDao = tokendb.tokenDao,///that is not correct should be with repositories
                 api = api
             )
         )

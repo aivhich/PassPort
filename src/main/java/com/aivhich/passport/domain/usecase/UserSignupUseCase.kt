@@ -13,7 +13,6 @@ import com.aivhich.passport.domain.repository.UserRepository
 class UserSignupUseCase @Inject constructor(
     private val userRepository: UserRepository,
     private val tokenRepository: TokenRepository,
-    private val userDao: UserDao
 ) {
     suspend operator fun invoke(req: RegisterRequest): Result<Token> {
         val answer = tokenRepository.signup(req)
@@ -24,7 +23,6 @@ class UserSignupUseCase @Inject constructor(
             is Result.Success -> {
                 val token: Token = answer.data
 
-                Log.d("out", "sign up")
                 var user: User? = null;
                 when(val out = userRepository.get(token.accesssToken)){
                     is Result.Error->{}
@@ -33,9 +31,9 @@ class UserSignupUseCase @Inject constructor(
                     }
                 }
 
-                userDao.delete()
+                userRepository.delete()
                 if (user != null) {
-                    userDao.saveUser(user)
+                    userRepository.save(user)
                     return Result.Success(answer.data)
                 }
                 return Result.Error(Exception())

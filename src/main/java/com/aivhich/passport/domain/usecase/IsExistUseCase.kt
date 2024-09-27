@@ -11,8 +11,6 @@ class IsExistUseCase @Inject constructor(
     private val apiService: ApiService
 ) {
     suspend operator fun invoke(checkExistRequest: CheckExistRequest): Result<CheckExistResponse> {
-
-        Log.d("out", "is exist check")
         return Result.Success(apiService.isExist(checkExistRequest))
     }
 }

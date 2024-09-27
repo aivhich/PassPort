@@ -8,6 +8,8 @@ import com.aivhich.passport.data.remote.retrofit.ApiService
 import javax.inject.Inject
 import com.aivhich.passport.common.Result
 import com.aivhich.passport.data.datasource.UserDao
+import com.aivhich.passport.domain.repository.TokenRepository
+import com.aivhich.passport.domain.repository.UserRepository
 
 class VerifyEmailUseCase @Inject constructor(
     private val apiService: ApiService,
@@ -16,7 +18,6 @@ class VerifyEmailUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(req: EmailVerifyRequest): Result<EmailVerifyResponse> {
         return try {
-            Log.d("out", "email verify user")
             req.accessToken = dao.getToken().accesssToken
             req.email = userDao.get().email
             val answer = apiService.emailVerify(req)
